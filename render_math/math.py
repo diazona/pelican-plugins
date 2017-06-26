@@ -33,6 +33,8 @@ the math.  See README for more details.
 import os
 import sys
 
+from six import string_types
+
 from pelican import signals, generators
 
 try:
@@ -90,10 +92,7 @@ def process_settings(pelicanobj):
         # and 3 of python
 
         if key == 'align':
-            try:
-                typeVal = isinstance(value, basestring)
-            except NameError:
-                typeVal = isinstance(value, str)
+            typeVal = isinstance(value, string_types)
 
             if not typeVal:
                 continue
@@ -122,10 +121,7 @@ def process_settings(pelicanobj):
             mathjax_settings[key] = 'true' if value else 'false'
 
         if key == 'latex_preview':
-            try:
-                typeVal = isinstance(value, basestring)
-            except NameError:
-                typeVal = isinstance(value, str)
+            typeVal = isinstance(value, string_types)
 
             if not typeVal:
                 continue
@@ -133,10 +129,7 @@ def process_settings(pelicanobj):
             mathjax_settings[key] = value
 
         if key == 'color':
-            try:
-                typeVal = isinstance(value, basestring)
-            except NameError:
-                typeVal = isinstance(value, str)
+            typeVal = isinstance(value, string_types)
 
             if not typeVal:
                 continue
@@ -161,19 +154,12 @@ def process_settings(pelicanobj):
 
         if key == 'tex_extensions' and isinstance(value, list):
             # filter string values, then add '' to them
-            try:
-                value = filter(lambda string: isinstance(string, basestring), value)
-            except NameError:
-                value = filter(lambda string: isinstance(string, str), value)
-
+            value = filter(lambda string: isinstance(string, string_types), value)
             value = map(lambda string: "'%s'" % string, value)
             mathjax_settings[key] = ',' + ','.join(value)
 
         if key == 'mathjax_font':
-            try:
-                typeVal = isinstance(value, basestring)
-            except NameError:
-                typeVal = isinstance(value, str)
+            typeVal = isinstance(value, string_types)
 
             if not typeVal:
                 continue
